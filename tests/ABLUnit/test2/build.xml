@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <project name="ABLUnit-test2">
+	plop !!!
   <taskdef resource="PCT.properties" />
 
   <target name="test">
