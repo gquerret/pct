@@ -9,6 +9,7 @@
         <pathelement location="src" />
       </propath>
     </ABLUnit>
+    <echo message="Hello world !" />
   </target>
 
 </project>
