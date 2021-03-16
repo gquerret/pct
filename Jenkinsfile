@@ -18,7 +18,7 @@ pipeline {
         script {
           def antHome = tool name: 'Ant 1.9', type: 'ant'
           def dlc11 = tool name: 'OpenEdge-11.7', type: 'openedge'
-          def dlc12 = tool name: 'OpenEdge-12.2', type: 'openedge'
+          def dlc12 = tool name: 'OpenEdge-12.4', type: 'openedge'
           def jdk = tool name: 'Corretto 11', type: 'jdk'
 
           withEnv(["JAVA_HOME=${jdk}"]) {
@@ -40,7 +40,7 @@ pipeline {
           def jdk = tool name: 'Corretto 11', type: 'jdk'
           def antHome = tool name: 'Ant 1.9', type: 'ant'
           def dlc11 = tool name: 'OpenEdge-11.7', type: 'openedge'
-          def dlc12 = tool name: 'OpenEdge-12.2', type: 'openedge'
+          def dlc12 = tool name: 'OpenEdge-12.4', type: 'openedge'
           withEnv(["TERM=xterm", "JAVA_HOME=${jdk}"]) {
             sh "${antHome}/bin/ant -DDLC11=${dlc11} -DDLC12=${dlc12} -DGIT_COMMIT=${commit} dist"
           }
@@ -56,6 +56,7 @@ pipeline {
                  branch3: { testBranch('linux', 'JDK8', 'Ant 1.10', 'OpenEdge-11.7', false, '11.7-Linux') },
                  branch5: { testBranch('windows', 'Corretto 11', 'Ant 1.10', 'OpenEdge-12.2', true, '12.2-Win') },
                  branch8: { testBranch('linux', 'Corretto 11', 'Ant 1.10', 'OpenEdge-12.2', false, '12.2-Linux') },
+                 branch9: { testBranch('windows', 'Corretto 11', 'Ant 1.10', 'OpenEdge-12.4', false, '12.4-Win') },
                  failFast: false
       }
     }
@@ -68,12 +69,14 @@ pipeline {
         unstash name: 'junit-11.7-Linux'
         unstash name: 'junit-12.2-Win'
         unstash name: 'junit-12.2-Linux'
+        unstash name: 'junit-12.4-Win'
 
         sh "mkdir junitreports"
         unzip zipFile: 'junitreports-11.7-Win.zip', dir: 'junitreports'
         unzip zipFile: 'junitreports-11.7-Linux.zip', dir: 'junitreports'
         unzip zipFile: 'junitreports-12.2-Win.zip', dir: 'junitreports'
         unzip zipFile: 'junitreports-12.2-Linux.zip', dir: 'junitreports'
+        unzip zipFile: 'junitreports-12.4-Win.zip', dir: 'junitreports'
         junit 'junitreports/**/*.xml'
       }
     }
